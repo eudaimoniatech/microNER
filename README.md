@@ -6,9 +6,9 @@ We provide four pre-trained models for German.
 
 All details: https://uhh-lt.github.io/microNER
 
-# Export as SavedModel
+# Export to Tensorflow protobuf
 We managed to export the models with specific versions of python, tensorflow and keras. To install them you need Miniconda3.
-To export this model as a TensorFlow SavedModel run:
+To export this model as a TensorFlow protobuf run:
 
 	conda env create -f=conversionenv.yml
 	conda activate microNERattempt1
