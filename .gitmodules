@@ -1,0 +1,3 @@
+[submodule "keras_to_tensorflow"]
+	path = keras_to_tensorflow
+	url = git@github.com:sauterp/keras_to_tensorflow.git
