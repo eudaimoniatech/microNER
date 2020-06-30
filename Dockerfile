@@ -69,9 +69,9 @@ RUN apt-get -y install python3-pip
 #ADD requirements.txt .
 #RUN pip3 install -r requirements.txt
 
-RUN pip3 install git+https://www.github.com/keras-team/keras-contrib.git
+RUN pip install git+https://www.github.com/keras-team/keras-contrib.git
 ADD scripts/*.py scripts/
-ADD embeddings/wiki.de.bin embeddings/wiki.de.bin
+#ADD embeddings/wiki.de.bin embeddings/wiki.de.bin
 COPY models/ models/
 COPY templates/ templates/
 ADD app.py .
