@@ -11,8 +11,8 @@ All details: https://uhh-lt.github.io/microNER
 The image needs a dataset from fasttext.cc. Download the following https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/wiki.de.zip and unzip it in embeddings/.
 Now run:
 
-	docker build . -t microNER
-	docker run -v $(pwd)/embeddings:/app/embeddings:Z -p 5001:5001 microNER
+	docker build . -t microner
+	docker run -v $(pwd)/embeddings:/app/embeddings:Z -p 5001:5001 microner
 
 # Export to Tensorflow protobuf
 We managed to export the models with specific versions of python, tensorflow and keras. To install them you need Miniconda3.
