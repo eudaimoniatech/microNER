@@ -4,8 +4,9 @@ RUN apt-get update && apt-get install -y \
     locales \
     software-properties-common \
     python3.6 \ 
-    python3.6-dev \
-    && rm -rf /var/lib/apt/lists/*
+    python3.6-dev 
+    # \
+    # && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8  
@@ -29,15 +30,17 @@ RUN --mount=type=cache,target=/root/.cache \
 ADD scripts/*.py scripts/
 RUN pip3 install git+https://www.github.com/keras-team/keras-contrib.git
 
-COPY embeddings/ embeddings/
+# COPY embeddings/ embeddings/
 COPY models/ models/
 COPY templates/ templates/
 
 ADD app.py .
+RUN mkdir -p embeddings
+RUN chmod 777 -R embeddings
 
 ENV TF_CPP_MIN_LOG_LEVEL=2
 ENV FLASK_APP app.py
-ENV FLASK_DEBUG 0
+ENV FLASK_DEBUG 1
 
 CMD flask run --host 0.0.0.0 --port 5001
 # Commented lines doesnt work on WIN10
