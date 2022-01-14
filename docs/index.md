@@ -1,6 +1,7 @@
 # microNER: A microservice for German Named Entity Recognition
 
 We publish several pre-trained models for Named Entity Recognition wrapped into a micro-service based on Docker to allow for easy integration of German NER into other applications via a JSON API. 
+
 With F-Scores above 82% for the GermEval'14 dataset and above 85% for the CoNLL'03 dataset, the micro-service achieves (near) state-of-the-art performance for this task.
 
 The service relies on bidirectional recurrent neural networks and CRF. For details, see [this paper](https://www.oeaw.ac.at/fileadmin/subsites/academiaecorpora/PDF/konvens18_19.pdf).
@@ -13,13 +14,13 @@ Further, it uses pre-trained fastText embeddings which require quite some disk s
 
 Download the image form Docker hub:
 
-```
+```sh
 docker pull uhhlt/microner:v0.1
 ```
 
 And run the image with a port exposed on your host, e.g. 5001:
 
-```
+```shell
 docker run -p 5001:5001 uhhlt/microner:v0.1
 ```
 

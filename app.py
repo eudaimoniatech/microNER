@@ -10,7 +10,7 @@ import scripts.ner as ner
 import scripts.models as models
 import logging
 import tensorflow as tf
-import fastText
+import fasttext as fastText
 
 # create the app
 app = Flask(__name__)
@@ -102,13 +102,15 @@ for model_file in get_model_files():
         max_sequence = 100
     else:
         max_sequence = 56
-    ner_models[model_file] = ner.NerModel(model_file, max_sequence)
-    ner_graphs[model_file] = tf.get_default_graph()
+        app.logger.info('Start loading model ' + model_file)
+        ner_models[model_file] = ner.NerModel( model_file, max_sequence)
+        ner_graphs[model_file] = tf.get_default_graph()
+        app.logger.debug('End loading model ' + model_file)
 
 
-app.logger.info('Loading fastText model.')
+app.logger.info('Start loading fastText model')
 models.ft = fastText.load_model("embeddings/wiki.de.bin")
-app.logger.info('Done.')
+app.logger.debug('Loading fastText model done')
 
 
 @app.route('/', methods=['GET'])

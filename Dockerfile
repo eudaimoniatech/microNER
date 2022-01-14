@@ -1,34 +1,43 @@
-FROM ubuntu
-MAINTAINER grenwi
+FROM ubuntu:18.04 AS environment
 
-RUN apt-get update 
-RUN apt-get -y install software-properties-common
-RUN apt-get update
-RUN apt-get install python3.5
-RUN apt-get clean && apt-get update && apt-get install -y locales
+RUN apt-get update && apt-get install -y \
+    locales \
+    software-properties-common \
+    python3.6 \ 
+    && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
+FROM environment AS application
+
 WORKDIR /app/
 EXPOSE 5001
 
-RUN apt-get -y install git-core
-RUN apt-get -y install python3-pip
+RUN apt-get install -y \
+    git-core \ 
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN pip3 install pybind11
-# RUN pip3 install git+https://github.com/facebookresearch/fastText.git
 ADD requirements.txt .
-RUN pip3 install -r requirements.txt
-RUN pip3 install git+https://www.github.com/keras-team/keras-contrib.git
+RUN --mount=type=cache,target=/root/.cache \
+    pip3 install -r requirements.txt
 ADD scripts/*.py scripts/
-ADD embeddings/wiki.de.bin embeddings/wiki.de.bin
+RUN pip3 install git+https://www.github.com/keras-team/keras-contrib.git
+
+COPY embeddings/ embeddings/
 COPY models/ models/
 COPY templates/ templates/
+
 ADD app.py .
 
+ENV TF_CPP_MIN_LOG_LEVEL=2
 ENV FLASK_APP app.py
 ENV FLASK_DEBUG 0
+
 # CMD flask run --host 0.0.0.0 --port 5001 --with-threads
-CMD gunicorn -b 0.0.0.0:5001 --worker-connections 1000 --timeout 180 app:app
+CMD gunicorn -b 0.0.0.0:5001 --log-level info --worker-connections 1000 --timeout 0 app:app
+# CMD gunicorn -b 0.0.0.0:5001 --log-level debug --worker-class gevent --worker-connections 1000 --timeout 0 app:app
